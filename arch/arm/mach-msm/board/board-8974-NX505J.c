@@ -61,6 +61,20 @@
 #define ZTE_PERSISTENT_RAM_SIZE	(SZ_1M)
 #endif
 
+static struct persistent_ram_descriptor msm_prd[] __initdata = {
+	{
+		.name = "ram_console",
+		.size = SZ_1M,
+	},
+};
+
+static struct persistent_ram msm_pr __initdata = {
+	.descs = msm_prd,
+	.num_descs = ARRAY_SIZE(msm_prd),
+	.start = PLAT_PHYS_OFFSET + SZ_1G + SZ_512M,
+	.size = SZ_1M,
+};
+
 static struct memtype_reserve msm8974_reserve_table[] __initdata = {
 	[MEMTYPE_SMI] = {
 	},
