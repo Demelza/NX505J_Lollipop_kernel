@@ -229,7 +229,7 @@
 #define POWER_STAGE_WA			BIT(2)
 
 #ifdef CONFIG_ZTEMT_COMM_CHARGE
-//´ò¿ªµ÷ÊÔ½Ó¿Ú
+//æ‰“å¼€è°ƒè¯•æ¥å£
 //#undef pr_debug
 //#define pr_debug   pr_info
 
@@ -442,7 +442,7 @@ struct qpnp_chg_chip {
 
 };
 #ifdef CONFIG_ZTEMT_POWER_DEBUG
-#include <../../arch/arm/mach-msm/clock.h>
+#include "../../arch/arm/mach-msm/clock.h"
 #define POWER_MONITOR_PERIOD_MS	10000
 #define DRV_NAME "zte_power_debug"
 static int power_debug_switch=1;
@@ -499,8 +499,8 @@ set_batt_temp(int temp)
     monitor_st.batt_temp = temp;
 }
 /*
-*  ¼ì²âµç³ØÎÂ¶ÈÊÇ·ñÒì³£
-*  µç³ØÎÂ¶ÈÊÇ·ñÔÚ[-6 , 48] ·¶Î§ÄÚ£»
+*  æ£€æµ‹ç”µæ± æ¸©åº¦æ˜¯å¦å¼‚å¸¸
+*  ç”µæ± æ¸©åº¦æ˜¯å¦åœ¨[-6 , 48] èŒƒå›´å†…ï¼›
 */
 #define BATT_TEMP_HIGH   530
 #define BATT_TEMP_LOW    -60
@@ -5036,7 +5036,7 @@ qpnp_chg_load_battery_data(struct qpnp_chg_chip *chip)
 
 /*
 * CONFIG_ZTEMT_COMM_CHARGE
- *  ÕâÀï¼ÓÔØµç³ØÊı¾İ
+ *  è¿™é‡ŒåŠ è½½ç”µæ± æ•°æ®
 */
     #ifdef CONFIG_ZTEMT_CHARGE_SUB
 	//don't read  the battery dts,use the charger own dts data
@@ -5908,7 +5908,7 @@ qpnp_print_debug_info(struct qpnp_chg_chip *chip ){
 		get_prop_pmic_temp(chip)/100);	               
 }
 
-//ÏŞÖÆÌõ¼şÊÇ¸ù¾İÓ²¼ş²âÊÔ½á¹ûµÃµ½µÄ
+//é™åˆ¶æ¡ä»¶æ˜¯æ ¹æ®ç¡¬ä»¶æµ‹è¯•ç»“æœå¾—åˆ°çš„
 
 #define CHG_PMIC_TEMP_HIGH_LIMIT    			700
 #define CHG_PMIC_TEMP_HIGH_RECOVER     		650
@@ -5965,7 +5965,7 @@ void is_ibatt_limited_for_temp(int pmic_temperature,int batt_temperature)
 
 
 /*
-* µç³ØÎÂ¶È¼ì²â
+* ç”µæ± æ¸©åº¦æ£€æµ‹
 */
 #define CHG_TEMP_HIGH1   530
 #define CHG_TEMP_LOW1     -60
@@ -5997,17 +5997,17 @@ batt_monitor_worker(struct work_struct *work)
 	if( is_charger_online() == 0)
 		goto out_work;
 
-	/*Õë¶ÔÓÚwall charger³äµçÊ±
-	*  µ±PMICµÄÎÂ¶È¸ßÓÚ70£¬²¢ÇÒpmicÎÂ¶ÈÓëµç³ØÎÂ¶ÈµÄ²îÖµ´óÓÚ30¡ãÊ±
-	* (ibatt) ½«±»ÏŞÖÆ
- 	*  µ±PMICµÄÎÂ¶ÈµÍÓÚ67£¬²¢ÇÒpmicÎÂ¶ÈÓëµç³ØÎÂ¶ÈµÄ²îÖµĞ¡ÓÚ25¡ãÊ±
- 	*  ½«²»ÔÚÏŞÁ÷
+	/*é’ˆå¯¹äºwall chargerå……ç”µæ—¶
+	*  å½“PMICçš„æ¸©åº¦é«˜äº70ï¼Œå¹¶ä¸”pmicæ¸©åº¦ä¸ç”µæ± æ¸©åº¦çš„å·®å€¼å¤§äº30Â°æ—¶
+	* (ibatt) å°†è¢«é™åˆ¶
+ 	*  å½“PMICçš„æ¸©åº¦ä½äº67ï¼Œå¹¶ä¸”pmicæ¸©åº¦ä¸ç”µæ± æ¸©åº¦çš„å·®å€¼å°äº25Â°æ—¶
+ 	*  å°†ä¸åœ¨é™æµ
 	*/	
 	is_ibatt_limited_for_temp(pmic_temperature,batt_temperature);
 
 	/*
-	*   µç³ØÎÂ¶ÈÔÚ¡¾-5, 47¡¿Ö®¼äÆô¶¯³äµç¹¦ÄÜ¡£
-	*   µç³ØÎÂ¶ÈÔÚ¡¾-6, 50¡¿Íâ²¿,Í£Ö¹³äµç¡£
+	*   ç”µæ± æ¸©åº¦åœ¨ã€-5, 47ã€‘ä¹‹é—´å¯åŠ¨å……ç”µåŠŸèƒ½ã€‚
+	*   ç”µæ± æ¸©åº¦åœ¨ã€-6, 50ã€‘å¤–éƒ¨,åœæ­¢å……ç”µã€‚
 	*/
 	if( batt_temperature > CHG_TEMP_LOW2 && batt_temperature < CHG_TEMP_HIGH2 &&
 		         is_chg_batt_temp_abnormal() ){
@@ -6042,7 +6042,7 @@ out_work:
 static void  
 check_start_monitor_work(struct qpnp_chg_chip *chip)
 {
-//ÉèÖÃ³äµçÆ÷×´Ì¬
+//è®¾ç½®å……ç”µå™¨çŠ¶æ€
     if( chip->usb_present ||chip->dc_present ){
 		set_charger_status(1);
     }else{
